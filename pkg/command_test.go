@@ -24,7 +24,8 @@ func TestMatches(t *testing.T) {
 	}{
 		{"command", "example", false},
 		{"command", "command", true},
-		{"command", "command example", false},
+		{"command        ", "command", true},
+		{"command", "command         example", false},
 		{"command <lorem>", "command", false},
 		{"command <lorem>", "command example", true},
 		{"command <lorem>", "command 1234567", true},
@@ -33,6 +34,11 @@ func TestMatches(t *testing.T) {
 		{"command <lorem:integer>", "command example", false},
 		{"command <lorem:integer>", "command 1234567", true},
 		{"command <lorem>", "command command command", false},
+		{"command <ipsum:integer?>", "command", true},
+		{"command <ipsum:integer?>", "command 2", true},
+		{"command <lorem:string?>", "command", true},
+		{"command <lorem:string> <ipsum:string?>", "command 1234567", true},
+		{"command <lorem:string> <ipsum:string?>", "command 1234567 test", true},
 	}
 
 	for _, set := range data {
@@ -116,7 +122,7 @@ func TestParameters(t *testing.T) {
 
 		for _, param := range set.parameters {
 			if !cmd.Has(param) {
-				t.Errorf("\"%s\" missing parameter.Item \"%s\"", cmd.Text(), param)
+				t.Errorf("\"%s\" missing parameter.Item \"%s\"", cmd.Text(), param.Name())
 			}
 		}
 	}

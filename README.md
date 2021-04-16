@@ -7,25 +7,21 @@ The **allot** library supports placeholders and regular expressions for paramete
 ## Usage
 
 ```go
-cmd := allot.NewCommand("revert <commits:integer> commits on <project:string> at (stage|prod)")
-match, err := cmd.Match("revert 12 commits on example at prod")
+ cmd := allot.New("revert <commits:integer> commits on <project:string> at (stage|prod)")
+ match, err := cmd.Match("revert 12 commits on example at prod")
 
-if (err != nil)
-  commits, _ = match.Integer("commits")
-  project, _ = match.String("project")
-  env, _ = match.Match(2)
-
-  fmt.Printf("Revert \"%d\" on \"%s\" at \"%s\"", commits, project, env)
-} else {
+ if err != nil {
   fmt.Println("Request did not match command.")
-}
+  os.Exit(1)
+ }
+ 
+ commits, _ := match.Integer("commits")
+ project, _ := match.String("project")
+ env, _ := match.Match(2)
+
+ fmt.Printf("Revert \"%d\" on \"%s\" at \"%s\"", commits, project, env)  # Revert 12 on example at prod
 ```
 
-## Examples
-
-See the [hanu Slackbot](https://github.com/sbstjn/hanu) framework for a usecase for **allot**:
-
-* [Host a Golang Slack bot on Heroku](https://sbstjn.com/host-golang-slackbot-on-heroku-with-hanu.html)
-
 ## Credits
- * [Go coverage script from Mathias Lafeldt](https://mlafeldt.github.io/blog/test-coverage-in-go/)
+
+* [Go coverage script from Mathias Lafeldt](https://mlafeldt.github.io/blog/test-coverage-in-go/)
