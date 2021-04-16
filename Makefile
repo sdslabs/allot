@@ -49,15 +49,15 @@ install-golangcilint:
 
 test:
 	@echo "Testing..."
-	@$(GO) test -cover -race ./...
+	@$(GO) test -cover -race ./pkg
 
 bench:
 	@echo "Benching..."
-	@$(GO) test -bench=. ./...
+	@$(GO) test -bench=. ./pkg
 
 race:
 	@echo "Racing..."
-	@$(GO) test -v -race ./...
+	@$(GO) test -v -race ./pkg
 
 cover:
 	@echo "Show coverage"

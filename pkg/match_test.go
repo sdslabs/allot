@@ -13,6 +13,7 @@ func TestMatch(t *testing.T) {
 		{"revert from <project:string> last <commits:integer> commits", "revert from example last 51 commits", 1, "51"},
 		{"revert from <project:string> last <commits:integer> commits on (stage|prod)", "revert from example last 51 commits on stage", 2, "stage"},
 		{"revert from <project:string> last <commits:integer> commits on (stage|prod)", "revert from example last 51 commits on prod", 2, "prod"},
+		{"revert from <project:string?> last <commits:integer> commits", "revert from last 51 commits", 1, "51"},
 	}
 
 	for _, set := range data {
@@ -41,6 +42,7 @@ func TestMatchAndInteger(t *testing.T) {
 		parameter string
 		value     int
 	}{
+		{"command <param1:integer?> <param2:integer>", "command 1234", "param2", 1234},
 		{"command <param1:integer>", "command 1234", "param1", 1234},
 		{"revert from <project:string> last <commits:integer> commits", "revert from example last 51 commits", "commits", 51},
 	}

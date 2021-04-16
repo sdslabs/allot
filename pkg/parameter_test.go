@@ -10,8 +10,8 @@ func TestExpression(t *testing.T) {
 		data       string
 		expression string
 	}{
-		{"string", "[^\\s]+"},
-		{"integer", "[0-9]+"},
+		{"string", "([^\\s]+)"},
+		{"integer", "([0-9]+)"},
 		{"unknown", ""},
 	}
 
@@ -22,7 +22,7 @@ func TestExpression(t *testing.T) {
 			t.Errorf("TextExpression regexp does not compile: %s", set.expression)
 		}
 
-		test := Expression(set.data)
+		test := GetRegexpExpression(set.data)
 
 		if test == nil && set.expression != "" {
 			t.Errorf("Expression for data \"%s\" is not valid", set.data)
@@ -40,8 +40,8 @@ func TestParameterExpression(t *testing.T) {
 		data       string
 		expression string
 	}{
-		{"lorem", "string", "[^\\s]+"},
-		{"ipsum", "integer", "[0-9]+"},
+		{"lorem", "string", "([^\\s]+)"},
+		{"ipsum", "integer", "([0-9]+)"},
 	}
 
 	for _, set := range data {
