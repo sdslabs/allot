@@ -6,12 +6,14 @@ import (
 )
 
 var regexpMapping = map[string]string{
-	"string":  "[^\\s]+",
-	"integer": "[0-9]+",
+	"string":   "([^\\s]+)",
+	"string?":  "([^\\s]+)?",
+	"integer":  "([0-9]+)",
+	"integer?": "([0-9]+)?",
 }
 
-// Expression returns the regexp for a data type
-func Expression(datatype string) *regexp.Regexp {
+// GetRegexpExpression returns the regexp for a data type
+func GetRegexpExpression(datatype string) *regexp.Regexp {
 	if exp, ok := regexpMapping[datatype]; ok {
 		return regexp.MustCompile(exp)
 	}
@@ -56,7 +58,7 @@ func (p Parameter) Equals(param ParameterInterface) bool {
 
 // NewParameterWithType returns
 func NewParameterWithType(name string, datatype string) Parameter {
-	return Parameter{name, datatype, Expression(datatype)}
+	return Parameter{name, datatype, GetRegexpExpression(datatype)}
 }
 
 // Parse parses parameter info
