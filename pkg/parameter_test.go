@@ -63,7 +63,7 @@ func TestParse(t *testing.T) {
 		datatype string
 	}{
 		{"<lorem>", "lorem", "string"},
-		{"<ipsum:integer>", "ipsum", "integer"},
+		{"<87675:?>", "rjkg34f", "string"},
 	}
 
 	var param Parameter
@@ -72,6 +72,9 @@ func TestParse(t *testing.T) {
 
 		if param.Name() != set.name {
 			t.Errorf("param.Name() should be \"%s\", but is \"%s\"", set.name, param.Name())
+		}
+		if param.Datatype() != set.datatype {
+			t.Errorf("param.Datatype() should be \"%s\", but is \"%s\"", set.datatype, param.Datatype())
 		}
 	}
 }

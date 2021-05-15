@@ -72,9 +72,17 @@ func Parse(text string) Parameter {
 
 	if strings.Contains(name, ":") {
 		splits = strings.Split(name, ":")
-
+		if splits[1] == "?" {
+			var validInt = regexp.MustCompile(`^[0-9]`)
+			if validInt.MatchString(splits[0]) {
+				datatype = "integer?"
+			} else {
+				datatype = "string?"
+			}
+		} else {
+			datatype = splits[1]
+		}
 		name = splits[0]
-		datatype = splits[1]
 	}
 
 	return NewParameterWithType(name, datatype)
