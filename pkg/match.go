@@ -44,7 +44,7 @@ func (m Match) Parameter(param ParameterInterface) (string, error) {
 	}
 
 	matches := m.Command.Expression().FindAllStringSubmatch(m.Request, -1)[0][1:]
-	return matches[m.Command.Position(param)], nil
+	return matches[pos], nil
 }
 
 // Match returns the match at given position

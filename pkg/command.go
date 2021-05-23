@@ -55,12 +55,7 @@ func (c Command) Parameters() []Parameter {
 			continue
 		}
 
-		pType := ""
-		if !strings.Contains(p[1], ":") {
-			pType = ":string"
-		}
-
-		list = append(list, Parse(p[1]+pType))
+		list = append(list, Parse(p[1]))
 	}
 
 	return list
