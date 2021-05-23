@@ -39,6 +39,7 @@ func TestMatches(t *testing.T) {
 		{"command <lorem:string?>", "command", true},
 		{"command <lorem:string> <ipsum:string?>", "command 1234567", true},
 		{"command <lorem:string> <ipsum:string?>", "command 1234567 test", true},
+		{"command <lorem:remaining_string>", "command 1234567 test", true},
 	}
 
 	for _, set := range data {
