@@ -95,6 +95,6 @@ func (c Command) Matches(req string) bool {
 }
 
 // New returns a new command
-func New(command string) Command {
-	return Command{command}
+func New(command string) *Command {
+	return &Command{command}
 }

@@ -68,7 +68,7 @@ func TestPosition(t *testing.T) {
 
 	var cmd Command
 	for _, set := range data {
-		cmd = New(set.command)
+		cmd = *New(set.command)
 
 		if cmd.Position(set.param) != set.position {
 			t.Errorf("Position() should be \"%d\", but is \"%d\"", set.position, cmd.Position(set.param))
@@ -115,7 +115,7 @@ func TestParameters(t *testing.T) {
 
 	var cmd Command
 	for _, set := range data {
-		cmd = New(set.command)
+		cmd = *New(set.command)
 
 		if cmd.Text() != set.command {
 			t.Errorf("cmd.Text() must be \"%s\", but is \"%s\"", set.command, cmd.Text())
