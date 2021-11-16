@@ -128,3 +128,28 @@ func TestParameters(t *testing.T) {
 		}
 	}
 }
+
+func TestTokenize(t *testing.T) {
+	var data = []struct {
+		command string
+		tokens  []*Token
+	}{
+		{"command <lorem>", []*Token{NewTokenWithType("command", notParameter), NewTokenWithType("lorem", definedParameter)}},
+		{"cmd <lorem:string>", []*Token{NewTokenWithType("cmd", definedParameter), NewTokenWithType("lorem:string", definedParameter)}},
+	}
+	var cmd Command
+	for _, set := range data {
+		cmd = *New(set.command)
+
+		if cmd.Text() != set.command {
+			t.Errorf("cmd.Text() must be \"%s\", but is \"%s\"", set.command, cmd.Text())
+		}
+
+		tokens := cmd.Tokenize()
+		for index, token := range set.tokens {
+			if tokens[index].word != token.word {
+				t.Errorf("\"%s\" missing token \"%s\"", cmd.Text(), token.word)
+			}
+		}
+	}
+}
