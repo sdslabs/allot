@@ -1,10 +1,3 @@
-run:
-  skip-files:
-  - "pkg/util/static/resource.go" # generated file
-
-issues:
-  exclude-use-default: false
-
 linters:
   disable-all: true
   enable:
@@ -14,9 +7,7 @@ linters:
   - unused
   - gosimple
   - bodyclose
-  - noctx
-  - golint
-  - gosec
+  - revive
   - unconvert
   - goconst
   - gocyclo
@@ -24,22 +15,13 @@ linters:
   - goimports
   - misspell
   - lll
-  - prealloc
 
 linters-settings:
   govet:
     check-shadowing: true
-    settings:
-      printf:
-        funcs:
-        - (github.com/sirupsen/logrus.Logger).Infof
-        - (github.com/sirupsen/logrus.Logger).Warnf
-        - (github.com/sirupsen/logrus.Logger).Errorf
-        - (github.com/sirupsen/logrus.Logger).Fatalf
 
   errcheck:
     check-type-assertions: true
-    check-blank: true
 
   goconst:
     min-len: 2
@@ -56,7 +38,7 @@ linters-settings:
     ignore-words: []
 
   lll:
-    line-length: 120
+    line-length: 140
     tab-width: 4
 
   gocyclo:

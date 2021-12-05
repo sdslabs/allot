@@ -15,6 +15,7 @@ type CommandInterface interface {
 	Parameters() []Parameter
 	Position(param ParameterInterface) int
 	Text() string
+	Tokenize() []*Token
 }
 
 // Command is a Command definition
@@ -47,7 +48,7 @@ func (c Command) Expression() *regexp.Regexp {
 // Parameters returns the list of defined parameters
 func (c Command) Parameters() []Parameter {
 	var list []Parameter
-	re := regexp.MustCompile("<(.*?)>")
+	re := regexp.MustCompile(definedParameterPattern)
 	result := re.FindAllStringSubmatch(c.Text(), -1)
 
 	for _, p := range result {
@@ -92,6 +93,11 @@ func (c Command) Match(req string) (MatchInterface, error) {
 // Matches checks if a comand definition matches a request
 func (c Command) Matches(req string) bool {
 	return c.Expression().MatchString(req)
+}
+
+// Tokenize returns Command info as tokens
+func (c Command) Tokenize() []*Token {
+	return tokenize(c.text)
 }
 
 // New returns a new command

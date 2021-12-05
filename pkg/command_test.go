@@ -128,3 +128,34 @@ func TestParameters(t *testing.T) {
 		}
 	}
 }
+
+func TestTokenize(t *testing.T) {
+	var data = []struct {
+		command string
+		tokens  []*Token
+	}{
+		{"command <lorem>", []*Token{NewTokenWithType("command", notParameter), NewTokenWithType("lorem", definedParameter)}},
+		{"cmd <lorem:string>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:string", definedParameter)}},
+		{"cmd <lorem:string?>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:string?", optionalParameter)}},
+		{"cmd <lorem:integer?>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:integer?", optionalParameter)}},
+		{"cmd <lorem:?>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:?", optionalParameter)}},
+	}
+	var cmd Command
+	for _, set := range data {
+		cmd = *New(set.command)
+
+		if cmd.Text() != set.command {
+			t.Errorf("cmd.Text() must be \"%s\", but is \"%s\"", set.command, cmd.Text())
+		}
+
+		tokens := cmd.Tokenize()
+		for index, token := range set.tokens {
+			if tokens[index].word != token.word {
+				t.Errorf("\"%s\" missing token \"%s\"", cmd.Text(), token.word)
+			}
+			if tokens[index].Type != token.Type {
+				t.Errorf("for input: %s & test case: %s, %d token type mismatch %d", tokens[index].word, token.word, tokens[index].Type, token.Type)
+			}
+		}
+	}
+}
