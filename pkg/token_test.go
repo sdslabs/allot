@@ -19,7 +19,7 @@ func TestGetParameterFromToken(t *testing.T) {
 	for _, set := range data {
 		param, err := set.token.GetParameterFromToken()
 		if err != nil && set.token.Type != notParameter {
-			t.Errorf("Cannot parse token: %s into parameter: %s", set.token.word, set.parameter.name)
+			t.Errorf("Cannot parse token: %s into parameter: %s", set.token.Word, set.parameter.name)
 		} else if err == nil && param.datatype != set.parameter.datatype {
 			t.Errorf("Expected parsed token type to be: %s but got: %s", set.parameter.datatype, param.datatype)
 		}

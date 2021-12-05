@@ -150,11 +150,11 @@ func TestTokenize(t *testing.T) {
 
 		tokens := cmd.Tokenize()
 		for index, token := range set.tokens {
-			if tokens[index].word != token.word {
-				t.Errorf("\"%s\" missing token \"%s\"", cmd.Text(), token.word)
+			if tokens[index].Word != token.Word {
+				t.Errorf("\"%s\" missing token \"%s\"", cmd.Text(), token.Word)
 			}
 			if tokens[index].Type != token.Type {
-				t.Errorf("for input: %s & test case: %s, %d token type mismatch %d", tokens[index].word, token.word, tokens[index].Type, token.Type)
+				t.Errorf("for input: %s & test case: %s, %d token type mismatch %d", tokens[index].Word, token.Word, tokens[index].Type, token.Type)
 			}
 		}
 	}

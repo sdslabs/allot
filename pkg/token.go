@@ -22,7 +22,7 @@ const (
 
 // Token represents the Token object
 type Token struct {
-	word string
+	Word string
 	Type int
 }
 
@@ -33,10 +33,10 @@ func (t Token) IsParameter() bool {
 // GetParameterFromToken return the parameter object created from token
 func (t Token) GetParameterFromToken() (Parameter, error) {
 	if t.IsParameter() {
-		return Parse(t.word), nil
+		return Parse(t.Word), nil
 	}
 
-	return Parameter{}, errors.New(t.word + " is not a parameter")
+	return Parameter{}, errors.New(t.Word + " is not a parameter")
 }
 
 // tokenize returns array of the Tokens present in the command
