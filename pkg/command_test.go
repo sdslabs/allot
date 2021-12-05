@@ -135,7 +135,10 @@ func TestTokenize(t *testing.T) {
 		tokens  []*Token
 	}{
 		{"command <lorem>", []*Token{NewTokenWithType("command", notParameter), NewTokenWithType("lorem", definedParameter)}},
-		{"cmd <lorem:string>", []*Token{NewTokenWithType("cmd", definedParameter), NewTokenWithType("lorem:string", definedParameter)}},
+		{"cmd <lorem:string>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:string", definedParameter)}},
+		{"cmd <lorem:string?>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:string?", optionalParameter)}},
+		{"cmd <lorem:integer?>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:integer?", optionalParameter)}},
+		{"cmd <lorem:?>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:?", optionalParameter)}},
 	}
 	var cmd Command
 	for _, set := range data {
@@ -149,6 +152,9 @@ func TestTokenize(t *testing.T) {
 		for index, token := range set.tokens {
 			if tokens[index].word != token.word {
 				t.Errorf("\"%s\" missing token \"%s\"", cmd.Text(), token.word)
+			}
+			if tokens[index].Type != token.Type {
+				t.Errorf("for input: %s & test case: %s, %d token type mismatch %d", tokens[index].word, token.word, tokens[index].Type, token.Type)
 			}
 		}
 	}
