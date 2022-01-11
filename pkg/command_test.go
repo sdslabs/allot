@@ -46,7 +46,8 @@ func TestMatches(t *testing.T) {
 		cmd := New(set.command)
 
 		if cmd.Matches(set.request) != set.matches {
-			t.Errorf("Matches() returns unexpected values. Got \"%v\", expected \"%v\"\nExpression: \"%s\" not matching \"%s\"", cmd.Matches(set.request), set.matches, cmd.Expression().String(), set.request)
+			t.Errorf("Matches() returns unexpected values. Got \"%v\", expected \"%v\"\nExpression: \"%s\" not matching \"%s\"",
+				cmd.Matches(set.request), set.matches, cmd.Expression().String(), set.request)
 		}
 	}
 }
@@ -104,13 +105,27 @@ func TestParameters(t *testing.T) {
 		{"command <lorem>", []Parameter{NewParameterWithType("lorem", "string")}},
 		{"cmd <lorem:string>", []Parameter{NewParameterWithType("lorem", "string")}},
 		{"command <lorem:integer>", []Parameter{NewParameterWithType("lorem", "integer")}},
-		{"example <lorem> <ipsum> <dolor>", []Parameter{NewParameterWithType("lorem", "string"), NewParameterWithType("ipsum", "string"), NewParameterWithType("dolor", "string")}},
-		{"command <lorem> <ipsum> <dolor:string>", []Parameter{NewParameterWithType("lorem", "string"), NewParameterWithType("ipsum", "string"), NewParameterWithType("dolor", "string")}},
-		{"command <lorem> <ipsum:string> <dolor>", []Parameter{NewParameterWithType("lorem", "string"), NewParameterWithType("ipsum", "string"), NewParameterWithType("dolor", "string")}},
-		{"command <lorem:string> <ipsum> <dolor>", []Parameter{NewParameterWithType("lorem", "string"), NewParameterWithType("ipsum", "string"), NewParameterWithType("dolor", "string")}},
-		{"command <lorem:string> <ipsum> <dolor:string>", []Parameter{NewParameterWithType("lorem", "string"), NewParameterWithType("ipsum", "string"), NewParameterWithType("dolor", "string")}},
-		{"command <lorem:string> <ipsum> <dolor:integer>", []Parameter{NewParameterWithType("lorem", "string"), NewParameterWithType("ipsum", "string"), NewParameterWithType("dolor", "integer")}},
-		{"command <lorem:integer> <ipsum:string> <dolor:integer>", []Parameter{NewParameterWithType("lorem", "integer"), NewParameterWithType("ipsum", "string"), NewParameterWithType("dolor", "integer")}},
+		{"example <lorem> <ipsum> <dolor>", []Parameter{NewParameterWithType("lorem", "string"),
+			NewParameterWithType("ipsum", "string"),
+			NewParameterWithType("dolor", "string")}},
+		{"command <lorem> <ipsum> <dolor:string>", []Parameter{NewParameterWithType("lorem", "string"),
+			NewParameterWithType("ipsum", "string"),
+			NewParameterWithType("dolor", "string")}},
+		{"command <lorem> <ipsum:string> <dolor>", []Parameter{NewParameterWithType("lorem", "string"),
+			NewParameterWithType("ipsum", "string"),
+			NewParameterWithType("dolor", "string")}},
+		{"command <lorem:string> <ipsum> <dolor>", []Parameter{NewParameterWithType("lorem", "string"),
+			NewParameterWithType("ipsum", "string"),
+			NewParameterWithType("dolor", "string")}},
+		{"command <lorem:string> <ipsum> <dolor:string>", []Parameter{NewParameterWithType("lorem", "string"),
+			NewParameterWithType("ipsum", "string"),
+			NewParameterWithType("dolor", "string")}},
+		{"command <lorem:string> <ipsum> <dolor:integer>", []Parameter{NewParameterWithType("lorem", "string"),
+			NewParameterWithType("ipsum", "string"),
+			NewParameterWithType("dolor", "integer")}},
+		{"command <lorem:integer> <ipsum:string> <dolor:integer>", []Parameter{NewParameterWithType("lorem", "integer"),
+			NewParameterWithType("ipsum", "string"),
+			NewParameterWithType("dolor", "integer")}},
 	}
 
 	var cmd Command
