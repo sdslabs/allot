@@ -40,6 +40,9 @@ func (c Command) Expression() *regexp.Regexp {
 
 		oldString2 := "<" + param.Name() + ">"
 		expr = strings.Replace(expr, oldString2, newString, -1)
+
+		oldString3 := "<" + param.Name() + ":?>"
+		expr = strings.Replace(expr, oldString3, newString, -1)
 	}
 
 	return regexp.MustCompile("^" + strings.ReplaceAll(expr, " ", "\\s?") + "$")
@@ -82,7 +85,6 @@ func (c Command) Position(param ParameterInterface) int {
 func (c Command) Match(req string) (MatchInterface, error) {
 	space := regexp.MustCompile(`\s+`)
 	req = space.ReplaceAllString(req, " ")
-
 	if c.Matches(req) {
 		return Match{c, req}, nil
 	}

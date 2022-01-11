@@ -7,11 +7,11 @@ import (
 )
 
 var regexpMapping = map[string]string{
-	"remaining_string": "([\\s\\S]*)",
-	"string":           "([^\\s]+)",
-	"string?":          "([^\\s]+)?",
-	"integer":          "([0-9]+)",
-	"integer?":         "([0-9]+)?",
+	REMAINING_STRING: "([\\s\\S]*)",
+	STRING:           "([^\\s]+)",
+	OPTIONAL_STRING:  "([^\\s]+)?",
+	INTEGER:          "([0-9]+)",
+	OPTIONAL_INTEGER: "([0-9]+)?",
 }
 
 // GetRegexpExpression returns the regexp for a data type
@@ -55,7 +55,7 @@ func (p Parameter) Datatype() string {
 
 // Equals checks if two parameter are equal
 func (p Parameter) Equals(param ParameterInterface) bool {
-	return p.Name() == param.Name() && p.Expression().String() == param.Expression().String()
+	return p.Name() == param.Name() && strings.Contains(p.Expression().String(), param.Expression().String())
 }
 
 // NewParameterWithType returns a Parameter
