@@ -9,19 +9,19 @@ func TestGetParameterFromToken(t *testing.T) {
 		token     *Token
 		parameter Parameter
 	}{
-		{NewTokenWithType("cmd", notParameter), NewParameterWithType("cmd", "")},
-		{NewTokenWithType("lorem", definedParameter), NewParameterWithType("lorem", "string")},
-		{NewTokenWithType("lorem:string", definedParameter), NewParameterWithType("lorem", "string")},
-		{NewTokenWithType("lorem:string?", optionalParameter), NewParameterWithType("lorem", "string?")},
-		{NewTokenWithType("lorem:integer?", optionalParameter), NewParameterWithType("lorem", "integer?")},
-		{NewTokenWithType("lorem:?", optionalParameter), NewParameterWithType("lorem", "string?")},
+		{NewTokenWithType("cmd", notParameter, 0), NewParameterWithType("cmd", "")},
+		{NewTokenWithType("lorem", definedParameter, 0), NewParameterWithType("lorem", "string")},
+		{NewTokenWithType("lorem:string", definedParameter, 0), NewParameterWithType("lorem", "string")},
+		{NewTokenWithType("lorem:string?", optionalParameter, 0), NewParameterWithType("lorem", "string?")},
+		{NewTokenWithType("lorem:integer?", optionalParameter, 0), NewParameterWithType("lorem", "integer?")},
+		{NewTokenWithType("lorem:?", optionalParameter, 0), NewParameterWithType("lorem", "string?")},
 	}
 	for _, set := range data {
 		param, err := set.token.GetParameterFromToken()
-		if err != nil && set.token.Type != notParameter {
-			t.Errorf("Cannot parse token: %s into parameter: %s", set.token.Word, set.parameter.name)
-		} else if err == nil && param.datatype != set.parameter.datatype {
-			t.Errorf("Expected parsed token type to be: %s but got: %s", set.parameter.datatype, param.datatype)
+		if err != nil && set.token.Type() != notParameter {
+			t.Errorf("Cannot parse token: %s into parameter: %s", set.token.Word(), set.parameter.Name())
+		} else if err == nil && param.Datatype() != set.parameter.Datatype() {
+			t.Errorf("Expected parsed token type to be: %s but got: %s", set.parameter.Datatype(), param.Datatype())
 		}
 	}
 }

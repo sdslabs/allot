@@ -134,11 +134,11 @@ func TestTokenize(t *testing.T) {
 		command string
 		tokens  []*Token
 	}{
-		{"command <lorem>", []*Token{NewTokenWithType("command", notParameter), NewTokenWithType("lorem", definedParameter)}},
-		{"cmd <lorem:string>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:string", definedParameter)}},
-		{"cmd <lorem:string?>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:string?", optionalParameter)}},
-		{"cmd <lorem:integer?>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:integer?", optionalParameter)}},
-		{"cmd <lorem:?>", []*Token{NewTokenWithType("cmd", notParameter), NewTokenWithType("lorem:?", optionalParameter)}},
+		{"command <lorem>", []*Token{NewTokenWithType("command", notParameter, 0), NewTokenWithType("lorem", definedParameter, 1)}},
+		{"cmd <lorem:string>", []*Token{NewTokenWithType("cmd", notParameter, 0), NewTokenWithType("lorem:string", definedParameter, 1)}},
+		{"cmd <lorem:string?>", []*Token{NewTokenWithType("cmd", notParameter, 0), NewTokenWithType("lorem:string?", optionalParameter, 1)}},
+		{"cmd <lorem:integer?>", []*Token{NewTokenWithType("cmd", notParameter, 0), NewTokenWithType("lorem:integer?", optionalParameter, 1)}},
+		{"cmd <lorem:?>", []*Token{NewTokenWithType("cmd", notParameter, 0), NewTokenWithType("lorem:?", optionalParameter, 1)}},
 	}
 	var cmd Command
 	for _, set := range data {
@@ -150,11 +150,11 @@ func TestTokenize(t *testing.T) {
 
 		tokens := cmd.Tokenize()
 		for index, token := range set.tokens {
-			if tokens[index].Word != token.Word {
-				t.Errorf("\"%s\" missing token \"%s\"", cmd.Text(), token.Word)
+			if tokens[index].Word() != token.Word() {
+				t.Errorf("\"%s\" missing token \"%s\"", cmd.Text(), token.Word())
 			}
-			if tokens[index].Type != token.Type {
-				t.Errorf("for input: %s & test case: %s, %d token type mismatch %d", tokens[index].Word, token.Word, tokens[index].Type, token.Type)
+			if tokens[index].Type() != token.Type() {
+				t.Errorf("for input: %s & test case: %s, %d token type mismatch %d", tokens[index].Word(), token.Word(), tokens[index].Type(), token.Type())
 			}
 		}
 	}
