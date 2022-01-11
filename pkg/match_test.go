@@ -11,6 +11,9 @@ func TestMatch(t *testing.T) {
 	}{
 		{"command <param1:integer>", "command 1234", 0, "1234"},
 		{"command <param1:remaining_string>", "command lorem ipsum", 0, "lorem ipsum"},
+		{"(comm|Comm) <param1:string> <param2:integer>", "comm hello 2", 0, "comm"},
+		{"(comm|Comm) <param1:string> <param2:integer>", "comm hello 2", 1, "hello"},
+		{"(comm|Comm) <param1:string> <param2:integer>", "comm hello 2", 2, "2"},
 		{"revert from <project:string> last <commits:integer> commits", "revert from example last 51 commits", 1, "51"},
 		{"revert from <project:string> last <commits:integer> commits on (stage|prod)", "revert from example last 51 commits on stage", 2, "stage"},
 		{"revert from <project:string> last <commits:integer> commits on (stage|prod)", "revert from example last 51 commits on prod", 2, "prod"},
@@ -85,6 +88,10 @@ func TestMatchAndString(t *testing.T) {
 		{"deploy <project:string> to (stage|prod)", "deploy klaus to stage", "project", "klaus"},
 		{"deploy <project:string> to (stage|prod)+", "deploy klaus to prod", "project", "klaus"},
 		{"deploy <project:string> to (stage|prod)*", "deploy klaus to ", "project", "klaus"},
+		{"deploy to (stage|prod) at <host>", "deploy to stage at localhost", "option0", "stage"},
+		{"deploy to (stage|prod) at <host>", "deploy to prod at localhost", "option0", "prod"},
+		{"deploy to (stage|prod) at <host>", "deploy to prod at localhost", "host", "localhost"},
+		{"deploy to (stage|prod) at (localhost|server)", "deploy to prod at server", "option1", "server"},
 	}
 
 	for _, set := range data {

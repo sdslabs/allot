@@ -2,7 +2,6 @@ package allot
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
 	"strings"
 )
@@ -11,6 +10,8 @@ const (
 	definedOptionsPattern    = "\\(.*?\\)"
 	definedParameterPattern  = "<(.*?)>"
 	optionalParameterPattern = "<(.*?)[?]>"
+	paramterPattern          = definedParameterPattern + "|" + definedOptionsPattern
+	numberPattern            = "\\d+"
 )
 
 const (
@@ -22,21 +23,37 @@ const (
 
 // Token represents the Token object
 type Token struct {
-	Word string
-	Type int
+	word     string
+	tType    int
+	position int
+}
+
+// Word returns the token word
+func (t Token) Word() string {
+	return t.word
+}
+
+// Type returns the token word
+func (t Token) Type() int {
+	return t.tType
+}
+
+// Position returns the token word
+func (t Token) Position() int {
+	return t.position
 }
 
 func (t Token) IsParameter() bool {
-	return t.Type != notParameter
+	return t.tType != notParameter
 }
 
 // GetParameterFromToken return the parameter object created from token
 func (t Token) GetParameterFromToken() (Parameter, error) {
 	if t.IsParameter() {
-		return Parse(t.Word), nil
+		return Parse(t.Word(), t.Position()), nil
 	}
 
-	return Parameter{}, errors.New(t.Word + " is not a parameter")
+	return Parameter{}, errors.New(t.Word() + " is not a parameter")
 }
 
 // tokenize returns array of the Tokens present in the command
@@ -48,22 +65,21 @@ func tokenize(line string) []*Token {
 	tokens := make([]*Token, len(words))
 	for i, word := range words {
 		tWord := word[1 : len(word)-1]
-		fmt.Println(word, definedParameterRegex.MatchString(word))
 		switch {
 		case optionalParameterRegex.MatchString(word):
-			tokens[i] = NewTokenWithType(tWord, optionalParameter)
+			tokens[i] = NewTokenWithType(tWord, optionalParameter, i)
 		case definedParameterRegex.MatchString(word):
-			tokens[i] = NewTokenWithType(tWord, definedParameter)
+			tokens[i] = NewTokenWithType(tWord, definedParameter, i)
 		case definedOptionsRegex.MatchString(word):
-			tokens[i] = NewTokenWithType(tWord, definedOptionsParameter)
+			tokens[i] = NewTokenWithType(tWord, definedOptionsParameter, i)
 		default:
-			tokens[i] = NewTokenWithType(word, notParameter)
+			tokens[i] = NewTokenWithType(word, notParameter, i)
 		}
 	}
 	return tokens
 }
 
 // NewTokenWithType returns a Token
-func NewTokenWithType(word string, tType int) *Token {
-	return &Token{word, tType}
+func NewTokenWithType(word string, tType int, tokenPosition int) *Token {
+	return &Token{word, tType, tokenPosition}
 }

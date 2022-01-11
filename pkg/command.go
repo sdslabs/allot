@@ -48,15 +48,15 @@ func (c Command) Expression() *regexp.Regexp {
 // Parameters returns the list of defined parameters
 func (c Command) Parameters() []Parameter {
 	var list []Parameter
-	re := regexp.MustCompile(definedParameterPattern)
+	re := regexp.MustCompile(paramterPattern)
 	result := re.FindAllStringSubmatch(c.Text(), -1)
 
-	for _, p := range result {
+	for listIndex, p := range result {
 		if len(p) != 2 {
 			continue
 		}
 
-		list = append(list, Parse(p[1]))
+		list = append(list, Parse(p[0], listIndex))
 	}
 
 	return list
