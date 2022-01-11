@@ -69,6 +69,38 @@ func TestMatchAndInteger(t *testing.T) {
 	}
 }
 
+func TestMatchAndOptionalInteger(t *testing.T) {
+	var data = []struct {
+		command   string
+		request   string
+		parameter string
+		value     int
+	}{
+		{"command <param1:integer?>", "command ", "param1", 0},
+		{"command <param1:integer?>", "command 1234", "param1", 1234},
+		{"revert from <project:string> last <commits:integer?> commits", "revert from example last commits", "commits", 0},
+		{"revert from <project:string> last <commits:integer?> commits", "revert from example last 51 commits", "commits", 51},
+	}
+
+	for _, set := range data {
+		match, err := New(set.command).Match(set.request)
+
+		if err != nil {
+			t.Errorf("Request [%s] does not match Command [%s]\n => %s", set.request, set.command, New(set.command).Expression().String())
+		}
+
+		value, err := match.Integer(set.parameter)
+
+		if err != nil {
+			t.Errorf("Parsign parameter returned error: %v", err)
+		}
+
+		if value != set.value {
+			t.Errorf("GetString() returned incorrect value. Got \"%d\", expected \"%d\"", value, set.value)
+		}
+	}
+}
+
 func TestMatchAndString(t *testing.T) {
 	var data = []struct {
 		command   string
@@ -92,6 +124,38 @@ func TestMatchAndString(t *testing.T) {
 		{"deploy to (stage|prod) at <host>", "deploy to prod at localhost", "option0", "prod"},
 		{"deploy to (stage|prod) at <host>", "deploy to prod at localhost", "host", "localhost"},
 		{"deploy to (stage|prod) at (localhost|server)", "deploy to prod at server", "option1", "server"},
+	}
+
+	for _, set := range data {
+		match, err := New(set.command).Match(set.request)
+
+		if err != nil {
+			t.Errorf("Request [%s] does not match Command [%s]", set.request, set.command)
+		}
+
+		value, err := match.String(set.parameter)
+
+		if err != nil {
+			t.Errorf("Parsign parameter returned error: %v", err)
+		}
+
+		if value != set.value {
+			t.Errorf("GetString() returned incorrect value. Got \"%s\", expected \"%s\"", value, set.value)
+		}
+	}
+}
+
+func TestMatchAndOptionalString(t *testing.T) {
+	var data = []struct {
+		command   string
+		request   string
+		parameter string
+		value     string
+	}{
+		{"command <param1:?>", "command", "param1", ""},
+		{"command <param1:?>", "command lorem", "param1", "lorem"},
+		{"command <param1:string?>", "command 1", "param1", "1"},
+		{"deploy <project:string> to <environment:string?>", "deploy example to stage", "environment", "stage"},
 	}
 
 	for _, set := range data {

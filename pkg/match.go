@@ -10,6 +10,7 @@ import (
 type MatchInterface interface {
 	String(name string) (string, error)
 	Integer(name string) (int, error)
+	RemainingString(text string) (string, error)
 	Match(position int) (string, error)
 
 	Parameter(param ParameterInterface) (string, error)
@@ -23,13 +24,18 @@ type Match struct {
 
 // String returns the value for a string parameter
 func (m Match) String(name string) (string, error) {
-	return m.Parameter(NewParameterWithType(name, "string"))
+	return m.Parameter(NewParameterWithType(name, StringType))
+}
+
+// String returns the value for a remaining string parameter
+func (m Match) RemainingString(name string) (string, error) {
+	return m.Parameter(NewParameterWithType(name, RemaingStringType))
 }
 
 // Integer returns the value for an integer parameter
 func (m Match) Integer(name string) (int, error) {
-	str, err := m.Parameter(NewParameterWithType(name, "integer"))
-	if err != nil {
+	str, err := m.Parameter(NewParameterWithType(name, IntegerType))
+	if err != nil || str == "" {
 		return 0, err
 	}
 
