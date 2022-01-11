@@ -7,11 +7,11 @@ import (
 )
 
 var regexpMapping = map[string]string{
-	REMAINING_STRING: "([\\s\\S]*)",
-	STRING:           "([^\\s]+)",
-	OPTIONAL_STRING:  "([^\\s]+)?",
-	INTEGER:          "([0-9]+)",
-	OPTIONAL_INTEGER: "([0-9]+)?",
+	RemaingStringType:   "([\\s\\S]*)",
+	StringType:          "([^\\s]+)",
+	OptionalStringType:  "([^\\s]+)?",
+	IntegerType:         "([0-9]+)",
+	OptionalIntegerType: "([0-9]+)?",
 }
 
 // GetRegexpExpression returns the regexp for a data type

@@ -24,17 +24,17 @@ type Match struct {
 
 // String returns the value for a string parameter
 func (m Match) String(name string) (string, error) {
-	return m.Parameter(NewParameterWithType(name, STRING))
+	return m.Parameter(NewParameterWithType(name, StringType))
 }
 
 // String returns the value for a remaining string parameter
 func (m Match) RemainingString(name string) (string, error) {
-	return m.Parameter(NewParameterWithType(name, REMAINING_STRING))
+	return m.Parameter(NewParameterWithType(name, RemaingStringType))
 }
 
 // Integer returns the value for an integer parameter
 func (m Match) Integer(name string) (int, error) {
-	str, err := m.Parameter(NewParameterWithType(name, INTEGER))
+	str, err := m.Parameter(NewParameterWithType(name, IntegerType))
 	if err != nil || str == "" {
 		return 0, err
 	}
