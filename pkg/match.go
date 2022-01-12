@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 // MatchInterface describes how to access a Match
@@ -54,7 +55,7 @@ func (m Match) Parameter(param ParameterInterface) (string, error) {
 	}
 
 	matches := m.Command.Expression().FindAllStringSubmatch(m.Request, -1)[0][1:]
-	return matches[pos], nil
+	return strings.TrimSpace(matches[pos]), nil
 }
 
 // Match returns the match at given position
@@ -69,5 +70,5 @@ func (m Match) Match(position int) (string, error) {
 		return "", fmt.Errorf("no parameter at position %d", position)
 	}
 
-	return matches[0][position+1], nil
+	return strings.TrimSpace(matches[0][position+1]), nil
 }

@@ -30,7 +30,7 @@ func TestMatch(t *testing.T) {
 		value, err := match.Match(set.position)
 
 		if err != nil {
-			t.Errorf("Parsign parameter returned error: %v", err)
+			t.Errorf("Parsing parameter returned error: %v", err)
 		}
 
 		if value != set.value {
@@ -60,7 +60,7 @@ func TestMatchAndInteger(t *testing.T) {
 		value, err := match.Integer(set.parameter)
 
 		if err != nil {
-			t.Errorf("Parsign parameter returned error: %v", err)
+			t.Errorf("Parsing parameter returned error: %v", err)
 		}
 
 		if value != set.value {
@@ -115,7 +115,6 @@ func TestMatchAndString(t *testing.T) {
 		{"deploy <project:string>-<stage:string> to <host>", "deploy klaus-prod to example", "stage", "prod"},
 		{"deploy <project:string> to (stage|prod)", "deploy klaus to stage", "project", "klaus"},
 		{"deploy <project:string> to (stage|prod)+", "deploy klaus to prod", "project", "klaus"},
-		{"deploy <project:string> to (stage|prod)*", "deploy klaus to ", "project", "klaus"},
 		{"deploy to (stage|prod) at <host>", "deploy to stage at localhost", "option0", "stage"},
 		{"deploy to (stage|prod) at <host>", "deploy to prod at localhost", "option0", "prod"},
 		{"deploy to (stage|prod) at <host>", "deploy to prod at localhost", "host", "localhost"},
@@ -132,7 +131,7 @@ func TestMatchAndString(t *testing.T) {
 		value, err := match.String(set.parameter)
 
 		if err != nil {
-			t.Errorf("Parsign parameter returned error: %v", err)
+			t.Errorf("Parsing parameter returned error: %v", err)
 		}
 
 		if value != set.value {
@@ -148,7 +147,7 @@ func TestMatchAndOptionalString(t *testing.T) {
 		parameter string
 		value     string
 	}{
-		{"command <param1:?>", "command", "param1", ""},
+		{"command <param1:?>", "command ", "param1", ""},
 		{"command <param1:?>", "command lorem", "param1", "lorem"},
 		{"command <param1:string?>", "command 1", "param1", "1"},
 		{"deploy <project:string> to <environment:string?>", "deploy example to stage", "environment", "stage"},
@@ -164,7 +163,7 @@ func TestMatchAndOptionalString(t *testing.T) {
 		value, err := match.String(set.parameter)
 
 		if err != nil {
-			t.Errorf("Parsign parameter returned error: %v", err)
+			t.Errorf("Parsing parameter returned error: %v", err)
 		}
 
 		if value != set.value {

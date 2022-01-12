@@ -31,21 +31,29 @@ func (c Command) Text() string {
 // Expression returns the regular expression matching the command text
 func (c Command) Expression() *regexp.Regexp {
 	expr := c.Text()
+	expr = strings.TrimSpace(expr)
+	expr = removeExtraWhitespaces(expr)
 
 	for _, param := range c.Parameters() {
 		newString := param.Expression().String()
 
 		oldString1 := "<" + param.Name() + ":" + param.Datatype() + ">"
+		if param.IsOptional() {
+			oldString1 = WhitespaceCharacter + oldString1
+		}
 		expr = strings.Replace(expr, oldString1, newString, -1)
 
 		oldString2 := "<" + param.Name() + ">"
 		expr = strings.Replace(expr, oldString2, newString, -1)
 
 		oldString3 := "<" + param.Name() + ":?>"
+		if param.IsOptional() {
+			oldString3 = WhitespaceCharacter + oldString3
+		}
 		expr = strings.Replace(expr, oldString3, newString, -1)
 	}
 
-	return regexp.MustCompile("^" + strings.ReplaceAll(expr, " ", "\\s?") + "$")
+	return regexp.MustCompile("^" + expr + "$")
 }
 
 // Parameters returns the list of defined parameters
@@ -83,8 +91,9 @@ func (c Command) Position(param ParameterInterface) int {
 
 // Match returns the parameter matching the expression at the defined position
 func (c Command) Match(req string) (MatchInterface, error) {
-	space := regexp.MustCompile(`\s+`)
-	req = space.ReplaceAllString(req, " ")
+	req = removeExtraWhitespaces(req)
+	req = strings.TrimSpace(req)
+
 	if c.Matches(req) {
 		return Match{c, req}, nil
 	}
@@ -94,7 +103,7 @@ func (c Command) Match(req string) (MatchInterface, error) {
 
 // Matches checks if a comand definition matches a request
 func (c Command) Matches(req string) bool {
-	return c.Expression().MatchString(req)
+	return c.Expression().MatchString(strings.TrimSpace(req))
 }
 
 // Tokenize returns Command info as tokens

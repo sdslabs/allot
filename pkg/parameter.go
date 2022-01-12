@@ -7,11 +7,11 @@ import (
 )
 
 var regexpMapping = map[string]string{
-	RemaingStringType:   "([\\s\\S]*)",
-	StringType:          "([^\\s]+)",
-	OptionalStringType:  "([^\\s]+)?",
-	IntegerType:         "([0-9]+)",
-	OptionalIntegerType: "([0-9]+)?",
+	RemaingStringType:   `([\s\S]*)`,
+	StringType:          `([^\s]+)`,
+	OptionalStringType:  `(\s?[^\s]+)?`,
+	IntegerType:         `([0-9]+)`,
+	OptionalIntegerType: `(\s?[0-9]+)?`,
 }
 
 // GetRegexpExpression returns the regexp for a data type
@@ -53,9 +53,14 @@ func (p Parameter) Datatype() string {
 	return p.datatype
 }
 
+// IsOptional returns whether the parameter is optional or not
+func (p Parameter) IsOptional() bool {
+	return p.datatype == OptionalStringType || p.datatype == OptionalIntegerType
+}
+
 // Equals checks if two parameter are equal
 func (p Parameter) Equals(param ParameterInterface) bool {
-	return p.Name() == param.Name() && strings.Contains(p.Expression().String(), param.Expression().String())
+	return p.Name() == param.Name() && strings.Contains(p.Datatype(), param.Datatype())
 }
 
 // NewParameterWithType returns a Parameter

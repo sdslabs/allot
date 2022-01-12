@@ -7,11 +7,11 @@ import (
 )
 
 const (
-	definedOptionsPattern    = "\\(.*?\\)"
-	definedParameterPattern  = "<(.*?)>"
-	optionalParameterPattern = "<(.*?)[?]>"
+	definedOptionsPattern    = `\(.*?\)`
+	definedParameterPattern  = `<(.*?)>`
+	optionalParameterPattern = `<(.*?)[?]>`
 	paramterPattern          = definedParameterPattern + "|" + definedOptionsPattern
-	numberPattern            = "\\d+"
+	numberPattern            = `\d+`
 )
 
 const (
