@@ -35,7 +35,11 @@ func (m Match) RemainingString(name string) (string, error) {
 // Integer returns the value for an integer parameter
 func (m Match) Integer(name string) (int, error) {
 	str, err := m.Parameter(NewParameterWithType(name, IntegerType))
-	if err != nil || str == "" {
+
+	if str == "" {
+		return 0, errors.New("value not provided")
+	}
+	if err != nil {
 		return 0, err
 	}
 

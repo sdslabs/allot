@@ -89,11 +89,7 @@ func TestMatchAndOptionalInteger(t *testing.T) {
 			t.Errorf("Request [%s] does not match Command [%s]\n => %s", set.request, set.command, New(set.command).Expression().String())
 		}
 
-		value, err := match.Integer(set.parameter)
-
-		if err != nil {
-			t.Errorf("Parsign parameter returned error: %v", err)
-		}
+		value, _ := match.Integer(set.parameter)
 
 		if value != set.value {
 			t.Errorf("GetString() returned incorrect value. Got \"%d\", expected \"%d\"", value, set.value)
