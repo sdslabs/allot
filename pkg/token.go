@@ -64,14 +64,13 @@ func tokenize(line string) []*Token {
 	words := strings.Fields(line)
 	tokens := make([]*Token, len(words))
 	for i, word := range words {
-		tWord := word[1 : len(word)-1]
 		switch {
 		case optionalParameterRegex.MatchString(word):
-			tokens[i] = NewTokenWithType(tWord, optionalParameter, i)
+			tokens[i] = NewTokenWithType(word[1:len(word)-1], optionalParameter, i)
 		case definedParameterRegex.MatchString(word):
-			tokens[i] = NewTokenWithType(tWord, definedParameter, i)
+			tokens[i] = NewTokenWithType(word[1:len(word)-1], definedParameter, i)
 		case definedOptionsRegex.MatchString(word):
-			tokens[i] = NewTokenWithType(tWord, definedOptionsParameter, i)
+			tokens[i] = NewTokenWithType(word[1:len(word)-1], definedOptionsParameter, i)
 		default:
 			tokens[i] = NewTokenWithType(word, notParameter, i)
 		}
